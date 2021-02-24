@@ -15,13 +15,14 @@ install:
   - npm ci # faster, goes only from package-lock
 before_script:
   - psql -c 'create database "deployment-exercise-test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
-
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE
+before_deploy: # omit node_modules, since we set skip_cleanup below
+  - rm -rf node_modules
+deploy: # see README for details on these keys
+  # prevents travis from deleting the build
+  skip_cleanup: true
+  provider: heroku
+  # app should be your heroku app name; see README
+  app: calandra-demo-v2
+  # the secure key indicates an encrypted value; see README
+  api_key:
+    secure: BVZFh0B+KTOl0fMWNvXufu10i6G4gidJn7+byOAxISE9fTpdRlbs/z8kcK23zx7iC8/cAztdVf/3TMEUVpH7LHJ948ZnBwynFrNQdvARRuxULT2efTnt51O6beRmtw4W1DZJxA2N2mq33ccOZU6g7duWPt7whH9bcL1uhd645CSDBrKxqebnoH3Pkm6cSSRd+pcb8MuCTj2bJzeml0tzm6Uqe8vU1NTELfI8oN0Dv+r6i6qXuxy+fSEGbcIO2ZOHT+d8UqGIh0zu4hilWunN9UCbzVa6xuxz6HznGgVsLAdvIQuMRaKh4hrr35qjJ0pf3Wzw9c9X6OyJgggR/Sp16mwjzkAAla8pCJ5I8nLw+bBLo/26rs37//Wm9j4F6BkuoCWDYzPrn5834OztW8ioskwoM/3z/FY0kyJ9BJSdIDPzW2Viqc9xyq/Ky4X9K7YfbeaFt/yOAkyCvACAkskZMmW1y56R/4kajPx4DaUJ3gq8hNtqfg6euaQuwQhiaRPiOLsgtTW9KEXFJa6hcJdqKgHzOeK+yRB+1424E0urvygZNge1r8F/GNiN7GDQQMFRn6bro47VBuhFoKWNgDQ4d3+BumRV7zIKowfcsWvzz3bQndpPGLxDrzi4P6VBjthJMC5Hc/6dqx6j37y2NvKTTReS+rom+h4aPm0LKyYxQ6o=
